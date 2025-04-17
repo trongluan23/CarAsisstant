@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Map Realtime GPS</title>
+    <meta charset="utf-8" />
+    <style>
+      #map {
+        height: 100%;
+        width: 100%;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfoZmVlF5PfdzWFRs2mlR2ccP62_2xOCc"></script>
+    <script>
+      let map, marker, directionsService, directionsRenderer;
+
+      function initMap() {
+        const myLatLng = { lat: 10.762622, lng: 106.660172 };
+        map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 14,
+          center: myLatLng,
+        });
+        marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          title: "Vị trí hiện tại",
+        });
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
+      }
+
+      function updatePosition(lat, lng) {
+        const newLatLng = new google.maps.LatLng(lat, lng);
+        marker.setPosition(newLatLng);
+        map.setCenter(newLatLng);
+      }
+
+      window.drawRoute = function (destLat, destLng) {
+        const request = {
+          origin: marker.getPosition(),
+          destination: new google.maps.LatLng(destLat, destLng),
+          travelMode: "DRIVING",
+        };
+        directionsService.route(request, (result, status) => {
+          if (status === "OK") {
+            directionsRenderer.setDirections(result);
+          } else {
+            console.log("Directions request failed: " + status);
+          }
+        });
+      };
+    </script>
+  </head>
+  <body onload="initMap()">
+    <div id="map"></div>
+  </body>
+</html>
