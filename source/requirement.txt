@@ -1,0 +1,10 @@
+PyQt6
+PyQt6-WebEngine
+SpeechRecognition
+google-generativeai
+google-api-python-client
+gTTS
+pygame
+opencv-python
+numpy
+requests
